@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ghana Educational Map with Drive Video</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIiPUZyzbj-NtRWEzYzSDEfE7qmzhWrGQ"></script>
+    <style>
+      #map {
+        height: 100vh;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        const ghanaCenter = { lat: 7.9465, lng: -1.0232 };
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 6,
+          center: ghanaCenter,
+        });
+
+        const sites = [
+          {
+            title: "Cape Coast Castle",
+            lat: 5.1034,
+            lng: -1.2482,
+            iframeUrl: "https://drive.google.com/file/d/13z8NJjiPowzx8JNaioYmePDapum8_c96/preview"
+          }
+        ];
+
+        sites.forEach(site => {
+          const marker = new google.maps.Marker({
+            position: { lat: site.lat, lng: site.lng },
+            map: map,
+            title: site.title
+          });
+
+          const popup = `
+            <h3>${site.title}</h3>
+            <iframe src="${site.iframeUrl}" width="300" height="200" allow="autoplay"></iframe>
+          `;
+
+          const infoWindow = new google.maps.InfoWindow({
+            content: popup
+          });
+
+          marker.addListener("click", () => {
+            infoWindow.open(map, marker);
+          });
+        });
+      }
+
+      window.onload = initMap;
+    </script>
+  </body>
+</html>
